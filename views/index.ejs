@@ -5,6 +5,8 @@
     <title><%= title %></title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
     <link rel='stylesheet' href='/css/accueil.css' />
+    <!-- Pas d'execution de ces scripts au chargement de la page. -->
+    <script src="/socket.io/socket.io.js"></script>
     <script src="//use.edgefonts.net/cutive.js"></script>
   </head>
   <body>
@@ -39,9 +41,5 @@
     
     <script src="/js/jquery-1.10.2.js"></script>
     <script src="/js/accueil.js"></script>
-	 <script src="/socket.io/socket.io.js"></script>
-        <script>
-            var socket = io.connect('http://localhost:3000');
-        </script>
   </body>
 </html>
