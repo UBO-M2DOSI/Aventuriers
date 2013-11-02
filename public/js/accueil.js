@@ -23,13 +23,6 @@
 })();
 
 
-
-
-
-
-
-
-
 $("#creerPartie").click(function(){
 
 $(".panel-body").append("<input type='text'  placeholder='Entrer le nom de la partie' id='inputNomPartie' class='form-control'>" +
@@ -51,6 +44,9 @@ function creerNomPartie(){
                 console.debug("Erreur existe deja");
                 else
                         console.debug( "success : une nouvelle partie est crée - nom : "+ nomPartie );
+						// Envoi du nom de la partie via Socket.io
+                        socket.emit('NomPartie', nomPartie);
+						// Sotckage du nom avec local storage
 						localStorage['nomPartie'] = nomPartie;
                 
         });
@@ -58,4 +54,5 @@ function creerNomPartie(){
 };
 
 
+         
 
