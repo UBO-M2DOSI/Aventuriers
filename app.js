@@ -65,8 +65,23 @@ app.post('/jeu/:partie/:joueur/choixDestinations');
 // creation du serveur http
 var server = http.createServer(app);
 
+// Chargement de socket.io
+var io = require('socket.io').listen(server);
+ 
+// Quand on client se connecte, on le note dans la console
+io.sockets.on('connection', function (socket) {
+    socket.emit('message', 'Vous êtes bien connecté !');
+ 
+    // Quand le serveur reçoit un signal de type "message" du client    
+    socket.on('NomPartie', function (NomPartie) {
+        console.log('Nom de la partie envoyé depuis le client : ' +NomPartie);
+    }); 
+});
+
+
 // démarrage du serveur http
 server.listen(app.get('port'), function(){
   console.log('Server listening on port ' + app.get('port'));
 });
 
+server.listen(3000);
