@@ -51,8 +51,8 @@ function Jeu() {
 	/** La pioche (cartes faces cachées). */
 	this.pioche = [];
 	/** Les 5 cartes visibles communes. */
-  this.visibles = [];
-  /** Les joueurs. */
+    this.visibles = [];
+    /** Les joueurs. */
 	this.joueurs = {};
 	/** Vrai si la partie est démarrée. */
 	this.started = false;
@@ -142,12 +142,11 @@ exports.nouveauJoueur = function (req, res){
   res.send(200);
 };
 
-/** Créatoin d'une nouvelle partie. */
-exports.nouvellePartie = function (req, res){
-  var nom = req.params.name
-   ,  partie = new Jeu();
+/** Création d'une nouvelle partie et envoi aux clients connectées. */
+exports.nouvellePartie = function (nom, socket){
+  var partie = new Jeu();
   parties[nom] = partie;  
-  res.send(200);
+  socket.broadcast.emit('NouvellePartie', { "nom": nom });
 };
 
 /** Un joueur rejoint une partie. */
@@ -166,6 +165,11 @@ exports.parties = function (req, res){
   }
   res.json(list);
 };
+
+/** Une nouvelle partie doit être envoyé à tous les 
+export.broadcastPartie = function(socket){
+
+}
 
 /** Affiche la page du jeu. */
 exports.jouer = function (req, res){	

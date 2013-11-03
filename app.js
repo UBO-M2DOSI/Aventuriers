@@ -38,8 +38,8 @@ app.get('/', accueil.index);
 
 // creation d'un nouveau joueur
 app.post('/nouveauNom/:name', jeu.nouveauJoueur);
-// creation d'une nouvelle partie
-app.post('/nouvellePartie/:name', jeu.nouvellePartie);
+// creation d'une nouvelle partie => socket.io
+
 // un joueur rejoint une partie
 app.post('/rejoindre/:partie/:joueur', jeu.rejoindre);
 // la liste des parties en cours
@@ -66,18 +66,20 @@ app.post('/jeu/:partie/:joueur/choixDestinations');
 var server = http.createServer(app);
 
 // Chargement de socket.io
-var io = require('socket.io').listen(server);
- 
+var io = socketio.listen(server);
+// configuration socket.io
+io.set('log level', 2);
+
 // Quand on client se connecte, on le note dans la console
 io.sockets.on('connection', function (socket) {
     socket.emit('message', 'Vous êtes bien connecté !');
  
     // Quand le serveur reçoit un signal de type "message" du client    
-    socket.on('NomPartie', function (NomPartie) {
-        console.log('Nom de la partie envoyé depuis le client : ' +NomPartie);
+    socket.on('NomPartie', function (nomPartie) {
+        console.log('Nom de la partie envoyé depuis le client : ' + nomPartie);                
+        jeu.nouvellePartie(nomPartie, socket);
     }); 
 });
-
 
 // démarrage du serveur http
 server.listen(app.get('port'), function(){
